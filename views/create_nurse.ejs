@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Nurse</title>
+    <link rel="stylesheet" href="form_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Create Nurse</h1>
+      <form class="form" action="/addNurse" method="POST">
+        <div class="form-group">
+          <label for="nurse_ID">Nurse ID:</label>
+          <input type="text" id="nurse_ID" name="nurse_ID" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="certifications">Certifications:</label>
+          <input
+            type="text"
+            id="certifications"
+            name="certifications"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="working_shift">Working Shift:</label>
+          <input
+            type="date"
+            id="working_shift"
+            name="working_shift"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="department">Department:</label>
+          <input type="text" id="department" name="department" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input type="text" id="last_name" name="last_name" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input type="text" id="first_name" name="first_name" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="hire_date">Hire Date:</label>
+          <input type="date" id="hire_date" name="hire_date" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="salary">Salary:</label>
+          <input type="text" id="salary" name="salary" required /><br />
+        </div>
+        <button type="submit" class="submit-button">Create Nurse</button>
+      </form>
+    </div>
+  </body>
+</html>

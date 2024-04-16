@@ -1,0 +1,20 @@
+<html>
+  <head>
+    <title>Delete Staff</title>
+  </head>
+  <body>
+    <h1>Delete Staff</h1>
+    <ul>
+      <% staff.forEach(staffMember => { %>
+      <li>
+        <%= staffMember.last_name %>, <%= staffMember.first_name %> - <%=
+        staffMember.job_title %> - <%= staffMember.salary %> - <%=
+        staffMember.hire_date %>
+        <form action="/deleteStaff/<%= staffMember.staff_id %>" method="POST">
+          <button type="submit">Delete</button>
+        </form>
+      </li>
+      <% }); %>
+    </ul>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Medical Record</title>
+    <link rel="stylesheet" href="form_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Create Medical Record</h1>
+      <form class="form" action="/addMedicalRecord" method="POST">
+        <div class="form-group">
+          <label for="record_id">Record ID:</label>
+          <input type="text" id="record_id" name="record_id" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="diagnoses">Diagnoses:</label>
+          <input type="text" id="diagnoses" name="diagnoses" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="allergies">Allergies:</label>
+          <input type="text" id="allergies" name="allergies" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="surgical_history">Surgical History:</label>
+          <textarea
+            id="surgical_history"
+            name="surgical_history"
+            rows="4"
+            cols="50"
+            required
+          ></textarea
+          ><br />
+        </div>
+        <div class="form-group">
+          <label for="current_medications">Current Medications:</label>
+          <textarea
+            id="current_medications"
+            name="current_medications"
+            rows="4"
+            cols="50"
+            required
+          ></textarea
+          ><br />
+        </div>
+        <div class="form-group">
+          <label for="nurse_ID">Nurse ID:</label>
+          <input type="text" id="nurse_ID" name="nurse_ID" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="patient_id">Patient ID:</label>
+          <input type="text" id="patient_id" name="patient_id" required /><br />
+        </div>
+        <button type="submit" class="submit-button">
+          Create Medical Record
+        </button>
+      </form>
+    </div>
+  </body>
+</html>
