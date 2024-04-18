@@ -25,6 +25,7 @@
             id="shift_schedule"
             name="shift_schedule"
             required
+            placeholder="yyyy-mm-dd"
           /><br />
         </div>
         <div class="form-group">
@@ -37,7 +38,13 @@
         </div>
         <div class="form-group">
           <label for="hire_date">Hire Date:</label>
-          <input type="date" id="hire_date" name="hire_date" required /><br />
+          <input
+            type="date"
+            id="hire_date"
+            name="hire_date"
+            required
+            placeholder="yyyy-mm-dd"
+          /><br />
         </div>
         <div class="form-group">
           <label for="salary">Salary:</label>
@@ -46,5 +53,6 @@
         <button type="submit" class="submit-button">Create Janitor</button>
       </form>
     </div>
+    <button onclick="window.location.href='/'" class="home-button">Home</button>
   </body>
 </html>

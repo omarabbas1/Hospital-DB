@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Janitor Table</title>
+    <link rel="stylesheet" href="/display_table.css" />
+  </head>
+  <body>
+    <h1>Janitor Table</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Janitor ID</th>
+          <th>Experience</th>
+          <th>Shift Schedule</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Hire Date</th>
+          <th>Salary</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% janitors.forEach(janitor => { %>
+        <tr>
+          <td><%= janitor.Janitor_ID %></td>
+          <td><%= janitor.Experience %></td>
+          <td><%= formatDate(janitor.shift_schedule) %></td>
+          <td><%= janitor.last_name %></td>
+          <td><%= janitor.first_name %></td>
+          <td><%= formatDate(janitor.hire_date) %></td>
+          <td><%= janitor.salary %></td>
+          <td>
+            <form
+              action="/updateJanitor/<%= janitor.Janitor_ID %>"
+              method="GET"
+            >
+              <button type="submit">Update</button>
+            </form>
+            <form
+              action="/deleteJanitor/<%= janitor.Janitor_ID %>"
+              method="POST"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+    <button onclick="window.location.href='/'" class="home-button">Home</button>
+  </body>
+</html>

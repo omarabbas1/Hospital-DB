@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Update Janitor</title>
+    <link rel="stylesheet" href="/form_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Update Janitor</h1>
+      <form
+        class="form"
+        action="/updateJanitor/<%= janitor.Janitor_ID %>"
+        method="POST"
+      >
+        <div class="form-group">
+          <label for="Janitor_ID">Janitor ID:</label>
+          <input
+            type="text"
+            id="Janitor_ID"
+            name="Janitor_ID"
+            value="<%= janitor.Janitor_ID %>"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="Experience">Experience:</label>
+          <input
+            type="text"
+            id="Experience"
+            name="Experience"
+            value="<%= janitor.Experience %>"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="shift_schedule">Shift Schedule:</label>
+          <input
+            type="date"
+            id="shift_schedule"
+            name="shift_schedule"
+            value="<%= formatDateForInput(janitor.shift_schedule) %>"
+            required
+          />
+          <br />
+        </div>
+        <div class="form-group">
+          <label for="last_name">Last Name:</label>
+          <input
+            type="text"
+            id="last_name"
+            name="last_name"
+            value="<%= janitor.last_name %>"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="first_name">First Name:</label>
+          <input
+            type="text"
+            id="first_name"
+            name="first_name"
+            value="<%= janitor.first_name %>"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="hire_date">Hire Date:</label>
+          <input
+            type="date"
+            id="hire_date"
+            name="hire_date"
+            value="<%= formatDateForInput(janitor.hire_date) %>"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="salary">Salary:</label>
+          <input
+            type="text"
+            id="salary"
+            name="salary"
+            value="<%= janitor.salary %>"
+            required
+          /><br />
+        </div>
+        <button type="submit" class="submit-button">Update Janitor</button>
+      </form>
+    </div>
+    <button onclick="window.location.href='/'" class="home-button">Home</button>
+  </body>
+</html>
