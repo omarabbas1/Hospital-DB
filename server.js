@@ -32,12 +32,6 @@ app.get("/create_staff", (req, res) => {
   res.render("create_janitor");
 });
 
-// Handle selecting a table and redirecting to the appropriate CRUD operation page
-app.post("/addData", (req, res) => {
-  const { table } = req.body;
-  res.redirect(`/create_${table}`);
-});
-
 // Render the form to create a new janitor
 app.get("/create_janitor", (req, res) => {
   res.render("create_janitor");
@@ -84,16 +78,6 @@ app.get("/display_staff", (req, res) => {
       res.status(500).send("Internal Server Error");
     }
   });
-});
-
-// Render the form to create a new room
-app.get("/create_room", (req, res) => {
-  res.render("create_room");
-});
-
-// Render the form to create a new room
-app.get("/create_room", (req, res) => {
-  res.render("create_room");
 });
 
 // Render the update janitor page with the janitor's details pre-filled
