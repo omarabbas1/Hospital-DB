@@ -1,0 +1,52 @@
+-- Essential Index
+CREATE INDEX idx_staff_id ON STAFF(staff_id);
+
+-- Essential Index
+CREATE INDEX idx_patient_id ON PATIENT(patient_id);
+
+-- Index for potential name searches
+CREATE INDEX idx_patient_name ON PATIENT(last_name, first_name); 
+
+-- Essential Index
+CREATE INDEX idx_doctor_id ON DOCTOR(doctor_id);
+
+-- Index for filtering by specialty and department (if common)
+CREATE INDEX idx_doctor_specialty_dept ON DOCTOR(specialty, department);
+
+-- Essential Index
+CREATE INDEX idx_nurse_id ON NURSE(nurse_id);
+
+-- Essential Index
+CREATE INDEX idx_appointment_id ON APPOINTMENT(appointment_id);
+
+-- Index for finding appointments within date/time ranges
+CREATE INDEX idx_appointment_datetime ON APPOINTMENT(appointment_date, appointment_time); 
+
+-- This view provides a quick list of patients currently admitted to a room, along with basic information.
+CREATE VIEW ActivePatients AS
+SELECT 
+    patient_id, first_name, last_name, date_of_birth, insurance_provider
+FROM PATIENT
+WHERE room_number IS NOT NULL; 
+
+-- This view helps doctors see their upcoming appointments with patient details
+CREATE VIEW DoctorAppointments AS
+SELECT 
+    DOCTOR.doctor_ID, DOCTOR.first_name, DOCTOR.last_name, 
+    APPOINTMENT.appointment_date, APPOINTMENT.appointment_time, 
+    PATIENT.first_name AS patient_first_name, PATIENT.last_name AS patient_last_name
+FROM DOCTOR
+INNER JOIN ATTEND ON DOCTOR.doctor_ID = ATTEND.doctor_ID
+INNER JOIN APPOINTMENT ON ATTEND.appointment_id = APPOINTMENT.appointment_id
+INNER JOIN PATIENT ON APPOINTMENT.patient_id = PATIENT.patient_id;
+
+
+-- This view aids nurses in tracking their room and patient assignments.
+ CREATE VIEW NurseAssignments AS
+ SELECT
+     NURSE.nurse_id, NURSE.first_name, NURSE.last_name, 
+     ROOM.room_number, PATIENT.first_name AS patient_first_name, PATIENT.last_name AS patient_last_name
+ FROM NURSE
+ INNER JOIN TAKES_CARE ON NURSE.nurse_id = TAKES_CARE.nurse_id
+ INNER JOIN ROOM ON TAKES_CARE.room_number = ROOM.room_number
+ INNER JOIN PATIENT ON ROOM.room_number = PATIENT.room_number;
