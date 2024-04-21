@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Staff Tables</title>
+    <link rel="stylesheet" href="/display_tables.css" />
+  </head>
+  <body>
+    <h1>Janitor Table</h1>
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchIdInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Janitor ID..."
+      />
+      <input
+        type="text"
+        id="searchExpInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Experience..."
+      />
+      <input
+        type="text"
+        id="searchScheduleInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Shift Schedule..."
+      />
+      <input
+        type="text"
+        id="searchLastNameInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Last Name..."
+      />
+      <input
+        type="text"
+        id="searchFirstNameInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="First Name..."
+      />
+      <input
+        type="text"
+        id="searchHireDateInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Hire Date..."
+      />
+      <input
+        type="text"
+        id="searchSalaryInput"
+        class="search-input"
+        onkeyup="searchJanitorTable()"
+        placeholder="Salary..."
+      />
+    </div>
+    <table id="janitorTable">
+      <thead>
+        <tr>
+          <th>Janitor ID</th>
+          <th>Experience</th>
+          <th>Shift Schedule</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Hire Date</th>
+          <th>Salary</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% janitorsFromTable.forEach(janitor => { %>
+        <tr>
+          <td><%= janitor.Janitor_ID %></td>
+          <td><%= janitor.Experience %></td>
+          <td><%= formatDate(janitor.shift_schedule) %></td>
+          <td><%= janitor.last_name %></td>
+          <td><%= janitor.first_name %></td>
+          <td><%= formatDate(janitor.hire_date) %></td>
+          <td><%= janitor.salary %></td>
+          <td>
+            <form
+              action="/updateJanitor/<%= janitor.Janitor_ID %>"
+              method="GET"
+            >
+              <button type="submit">Update</button>
+            </form>
+            <form
+              action="/deleteJanitor/<%= janitor.Janitor_ID %>"
+              method="POST"
+            >
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <h1>Room Table</h1>
+    <div class="search-container">
+      <input
+        type="text"
+        id="searchRoomNumberInput"
+        class="search-input"
+        onkeyup="searchRoomTable()"
+        placeholder="Room Number..."
+      />
+      <input
+        type="text"
+        id="searchBedCountInput"
+        class="search-input"
+        onkeyup="searchRoomTable()"
+        placeholder="Bed Count..."
+      />
+      <input
+        type="text"
+        id="searchRoomTypeInput"
+        class="search-input"
+        onkeyup="searchRoomTable()"
+        placeholder="Room Type..."
+      />
+      <input
+        type="text"
+        id="searchJanitorIdInput"
+        class="search-input"
+        onkeyup="searchRoomTable()"
+        placeholder="Janitor ID..."
+      />
+    </div>
+    <table id="roomTable">
+      <thead>
+        <tr>
+          <th>Room Number</th>
+          <th>Bed Count</th>
+          <th>Room Type</th>
+          <th>Janitor ID</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% rooms.forEach(room => { %>
+        <tr>
+          <td><%= room.room_number %></td>
+          <td><%= room.bed_count %></td>
+          <td><%= room.room_type %></td>
+          <td><%= room.Janitor_ID %></td>
+          <td>
+            <form action="/updateRoom/<%=room.room_number %>" method="GET">
+              <button type="submit">Update</button>
+            </form>
+            <form action="/deleteRoom/<%= room.room_number %>" method="POST">
+              <button type="submit">Delete</button>
+            </form>
+          </td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <h1>Janitor View</h1>
+    <table id="janitorViewTable">
+      <thead>
+        <tr>
+          <th>Janitor ID</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Hire Date</th>
+          <th>Salary</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% janitorsFromView.forEach(janitor => { %>
+        <tr>
+          <td><%= janitor.Janitor_ID %></td>
+          <td><%= janitor.last_name %></td>
+          <td><%= janitor.first_name %></td>
+          <td><%= formatDate(janitor.hire_date) %></td>
+          <td><%= janitor.salary %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <h1>Janitor Schedule View</h1>
+    <table id="janitorScheduleViewTable">
+      <thead>
+        <tr>
+          <th>Janitor ID</th>
+          <th>Last Name</th>
+          <th>First Name</th>
+          <th>Shift Schedule</th>
+          <th>Room Number</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% janitorSchedules.forEach(schedule => { %>
+        <tr>
+          <td><%= schedule.Janitor_ID %></td>
+          <td><%= schedule.last_name %></td>
+          <td><%= schedule.first_name %></td>
+          <td><%= formatDate(schedule.shift_schedule) %></td>
+          <td><%= schedule.room_number %></td>
+        </tr>
+        <% }) %>
+      </tbody>
+    </table>
+
+    <button onclick="window.location.href='/'" class="home-button">Home</button>
+
+    <script>
+      function searchJanitorTable() {
+        var inputValues = document.querySelectorAll(
+          "#searchIdInput, #searchExpInput, #searchScheduleInput, #searchLastNameInput, #searchFirstNameInput, #searchHireDateInput, #searchSalaryInput"
+        );
+        var filter = [];
+        inputValues.forEach(function (input) {
+          filter.push(input.value.toUpperCase());
+        });
+        var table = document.getElementById("janitorTable");
+        var tr = table.getElementsByTagName("tr");
+        for (var i = 1; i < tr.length; i++) {
+          var tds = tr[i].getElementsByTagName("td");
+          var displayRow = true;
+          for (var j = 0; j < tds.length; j++) {
+            var txtValue = tds[j].textContent || tds[j].innerText;
+            if (filter[j] && txtValue.toUpperCase().indexOf(filter[j]) === -1) {
+              displayRow = false;
+              break;
+            }
+          }
+          tr[i].style.display = displayRow ? "" : "none";
+        }
+      }
+
+      function searchRoomTable() {
+        var inputValues = document.querySelectorAll(
+          "#searchRoomNumberInput, #searchBedCountInput, #searchRoomTypeInput, #searchJanitorIdInput"
+        );
+        var filter = [];
+        inputValues.forEach(function (input) {
+          filter.push(input.value.toUpperCase());
+        });
+        var table = document.getElementById("roomTable");
+        var tr = table.getElementsByTagName("tr");
+        for (var i = 1; i < tr.length; i++) {
+          var tds = tr[i].getElementsByTagName("td");
+          var displayRow = true;
+          for (var j = 0; j < tds.length; j++) {
+            var txtValue = tds[j].textContent || tds[j].innerText;
+            if (filter[j] && txtValue.toUpperCase().indexOf(filter[j]) === -1) {
+              displayRow = false;
+              break;
+            }
+          }
+          tr[i].style.display = displayRow ? "" : "none";
+        }
+      }
+    </script>
+  </body>
+</html>

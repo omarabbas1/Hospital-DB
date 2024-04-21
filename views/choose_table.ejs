@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Staff</title>
+    <link rel="stylesheet" href="choose_table.css" />
+  </head>
+  <body>
+    <form action="/addData" method="POST" class="container">
+      <h1>Choose which Table you want to insert in</h1>
+      <label for="tableSelect">Select Table:</label>
+      <select id="tableSelect" name="table">
+        <option>Select an option...</option>
+        <option value="janitor">Janitor</option>
+        <option value="room">Room</option>
+      </select>
+      <button type="submit">Go</button>
+    </form>
+  </body>
+</html>

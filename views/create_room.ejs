@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Create Room</title>
+    <link rel="stylesheet" href="form_styles.css" />
+  </head>
+  <body>
+    <div class="container">
+      <h1 class="title">Create Room</h1>
+      <form class="form" action="/addRoom" method="POST">
+        <div class="form-group">
+          <label for="room_number">Room Number:</label>
+          <input
+            type="text"
+            id="room_number"
+            name="room_number"
+            required
+          /><br />
+        </div>
+        <div class="form-group">
+          <label for="bed_count">Bed Count:</label>
+          <input type="text" id="bed_count" name="bed_count" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="room_type">Room Type:</label>
+          <input type="text" id="room_type" name="room_type" required /><br />
+        </div>
+        <div class="form-group">
+          <label for="Janitor_ID">Janitor ID:</label>
+          <input type="text" id="Janitor_ID" name="Janitor_ID" required /><br />
+        </div>
+        <button type="submit" class="submit-button">Create Room</button>
+      </form>
+      <button onclick="window.location.href='/'" class="home-button-create">
+        Home
+      </button>
+    </div>
+  </body>
+</html>

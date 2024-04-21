@@ -8,7 +8,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(express.static("public"));
 
-// Create the connection to the MySQL database
 const mySQLConnection = mysql.createConnection({
   host: "localhost",
   user: "root",
@@ -16,28 +15,32 @@ const mySQLConnection = mysql.createConnection({
   database: "Hospital",
 });
 
-// Open a connection to the MySQL database
 mySQLConnection.connect((err) => {
   if (!err) console.log("Database connection created successfully!");
   else console.log("Error connecting to the database: " + err.message);
 });
 
-// Render the index page with buttons to redirect to CRUD operation pages
 app.get("/", (req, res) => {
   res.render("index");
 });
 
-// Render the page to choose a table to create
-app.get("/create_staff", (req, res) => {
-  res.render("create_janitor");
+app.post("/addData", (req, res) => {
+  const { table } = req.body;
+  res.redirect(`/create_${table}`);
 });
 
-// Render the form to create a new janitor
+app.get("/create_staff", (req, res) => {
+  res.render("choose_table");
+});
+
+app.get("/create_room", (req, res) => {
+  res.render("create_room");
+});
+
 app.get("/create_janitor", (req, res) => {
   res.render("create_janitor");
 });
 
-// Handle adding a new janitor
 app.post("/addJanitor", (req, res) => {
   const janitor = req.body;
   const sql =
@@ -52,7 +55,7 @@ app.post("/addJanitor", (req, res) => {
     janitor.salary,
   ];
   mySQLConnection.query(sql, values, (err, result) => {
-    if (!err) res.redirect("/display_staff");
+    if (!err) res.redirect("/display_tables");
     else
       res
         .status(500)
@@ -62,39 +65,79 @@ app.post("/addJanitor", (req, res) => {
   });
 });
 
-// Include the formatDate function from the utils.js file
+app.post("/addRoom", (req, res) => {
+  const room = req.body;
+  const sql =
+    "INSERT INTO ROOM (room_number, bed_count, room_type, Janitor_ID) VALUES (?, ?, ?, ?)";
+  const values = [
+    room.room_number,
+    room.bed_count,
+    room.room_type,
+    room.Janitor_ID,
+  ];
+  mySQLConnection.query(sql, values, (err, result) => {
+    if (!err) res.redirect("/display_tables");
+    else
+      res
+        .status(500)
+        .send(
+          "Error inserting entry, make sure you are not violating any constraints and the data is set correctly with an existing janitor id"
+        );
+  });
+});
+
 const { formatDate, formatDateForInput } = require("./utils");
 
-app.get("/display_staff", (req, res) => {
+app.get("/display_tables", (req, res) => {
   mySQLConnection.query(
     "SELECT * FROM janitor_view",
-    (err, janitorsFromView, fields) => {
-      if (err) {
+    (err1, janitorsFromView, fields1) => {
+      if (err1) {
         res.status(500).send("Internal Server Error");
         return;
       }
 
       mySQLConnection.query(
         "SELECT * FROM JANITOR",
-        (err, janitorsFromTable, fields) => {
-          if (err) {
+        (err2, janitorsFromTable, fields2) => {
+          if (err2) {
             res.status(500).send("Internal Server Error");
             return;
           }
 
-          // Pass the formatDate function to the EJS template
-          res.render("display_janitor", {
-            janitorsFromTable: janitorsFromTable,
-            janitorsFromView: janitorsFromView,
-            formatDate: formatDate, // Now the function is available in your EJS template
-          });
+          mySQLConnection.query(
+            "SELECT * FROM ROOM",
+            (err3, rooms, fields3) => {
+              if (err3) {
+                res.status(500).send("Internal Server Error");
+                return;
+              }
+
+              mySQLConnection.query(
+                "SELECT * FROM janitor_schedule_view",
+                (err4, janitorSchedules, fields4) => {
+                  if (err4) {
+                    res.status(500).send("Internal Server Error");
+                    return;
+                  }
+
+                  res.render("display_tables", {
+                    janitorsFromTable: janitorsFromTable,
+                    janitorsFromView: janitorsFromView,
+                    rooms: rooms,
+                    janitorSchedules: janitorSchedules,
+                    formatDate: formatDate,
+                  });
+                }
+              );
+            }
+          );
         }
       );
     }
   );
 });
 
-// Render the update janitor page with the janitor's details pre-filled
 app.get("/updateJanitor/:janitor_id", (req, res) => {
   const janitorId = req.params.janitor_id;
   mySQLConnection.query(
@@ -113,7 +156,6 @@ app.get("/updateJanitor/:janitor_id", (req, res) => {
   );
 });
 
-// Handle updating a janitor
 app.post("/updateJanitor/:janitor_id", (req, res) => {
   const janitorId = req.params.janitor_id;
   const janitor = req.body;
@@ -129,18 +171,64 @@ app.post("/updateJanitor/:janitor_id", (req, res) => {
     janitorId,
   ];
   mySQLConnection.query(sql, values, (err, result) => {
-    if (!err) res.redirect("/display_staff");
+    if (!err) res.redirect("/display_tables");
     else res.status(500).send("Internal Server Error");
   });
 });
 
-// Handle deleting a janitor
 app.post("/deleteJanitor/:janitor_id", (req, res) => {
   const janitorId = req.params.janitor_id;
   const sql = "DELETE FROM JANITOR WHERE Janitor_ID = ?";
   mySQLConnection.query(sql, [janitorId], (err, result) => {
     if (!err) {
-      res.redirect("/display_staff"); // Redirect to the staff display page
+      res.redirect("/display_tables");
+    } else {
+      res.status(500).send("Internal Server Error");
+    }
+  });
+});
+
+app.get("/updateRoom/:room_number", (req, res) => {
+  const roomNumber = req.params.room_number;
+  mySQLConnection.query(
+    "SELECT * FROM ROOM WHERE room_number = ?",
+    [roomNumber],
+    (err, room, fields) => {
+      if (!err) {
+        res.render("update_room", {
+          room: room[0],
+          formatDateForInput: formatDateForInput,
+        });
+      } else {
+        res.status(500).send("Internal Server Error");
+      }
+    }
+  );
+});
+
+app.post("/updateRoom/:room_number", (req, res) => {
+  const roomNumber = req.params.room_number;
+  const room = req.body;
+  const sql =
+    "UPDATE ROOM SET bed_count = ?, room_type = ?, Janitor_ID = ? WHERE room_number = ?";
+  const values = [room.bed_count, room.room_type, room.Janitor_ID, roomNumber];
+  mySQLConnection.query(sql, values, (err, result) => {
+    if (!err) res.redirect("/display_tables");
+    else
+      res
+        .status(500)
+        .send(
+          "make sure the janitor id exits and all the fields are set correctly"
+        );
+  });
+});
+
+app.post("/deleteRoom/:room_number", (req, res) => {
+  const roomNumber = req.params.room_number;
+  const sql = "DELETE FROM ROOM WHERE room_number = ?";
+  mySQLConnection.query(sql, [roomNumber], (err, result) => {
+    if (!err) {
+      res.redirect("/display_tables");
     } else {
       res.status(500).send("Internal Server Error");
     }
