@@ -65,19 +65,33 @@ app.post("/addJanitor", (req, res) => {
 // Include the formatDate function from the utils.js file
 const { formatDate, formatDateForInput } = require("./utils");
 
-// Route to render the page for reading, updating, and deleting staff
 app.get("/display_staff", (req, res) => {
-  mySQLConnection.query("SELECT * FROM JANITOR", (err, janitors, fields) => {
-    if (!err) {
-      // Pass the formatDate function to the EJS template
-      res.render("display_janitor", {
-        janitors: janitors,
-        formatDate: formatDate, // Now the function is available in your EJS template
-      });
-    } else {
-      res.status(500).send("Internal Server Error");
+  mySQLConnection.query(
+    "SELECT * FROM janitor_view",
+    (err, janitorsFromView, fields) => {
+      if (err) {
+        res.status(500).send("Internal Server Error");
+        return;
+      }
+
+      mySQLConnection.query(
+        "SELECT * FROM JANITOR",
+        (err, janitorsFromTable, fields) => {
+          if (err) {
+            res.status(500).send("Internal Server Error");
+            return;
+          }
+
+          // Pass the formatDate function to the EJS template
+          res.render("display_janitor", {
+            janitorsFromTable: janitorsFromTable,
+            janitorsFromView: janitorsFromView,
+            formatDate: formatDate, // Now the function is available in your EJS template
+          });
+        }
+      );
     }
-  });
+  );
 });
 
 // Render the update janitor page with the janitor's details pre-filled
